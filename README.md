@@ -1,0 +1,1 @@
+This IMDB clone uses Tailwind CSS for styling and responsive design. It is built using NextJS and React, and this project combines two APIs. The movie and tv results come from the TMDB api and the trailers come from the Youtube api.
