@@ -16,8 +16,13 @@ const Header = () => {
           <HeaderIcon title="HOME" Icon={HomeIcon} />
         </button>
 
-        <HeaderIcon title="ACCOUNT" Icon={UserIcon} />
-        <HeaderIcon title="ABOUT" Icon={InformationCircleIcon} />
+        <button onClick={() => router.push('/account')}>
+          <HeaderIcon title="ACCOUNT" Icon={UserIcon} />
+        </button>
+
+        <button onClick={() => router.push('/about')}>
+          <HeaderIcon title="ABOUT" Icon={InformationCircleIcon} />
+        </button>
       </div>
       <Image
         src="/images/not_imdb_logo.png"

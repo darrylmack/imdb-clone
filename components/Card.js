@@ -22,10 +22,12 @@ const Card = ({ result }) => {
         src={`${baseURL}${result.poster_path}`}
         width={500}
         height={750}
+        alt={result.title}
       />
       <div className="p-2">
         <h2 className="text-lg font-bold">{result.title || result.name}</h2>
         <p className="truncate text-md font-light">{result.overview}</p>
+
         <p className="flex items-center font-light ">
           <Moment parse="YYYY-MM-DD" format="M/DD/YYYY">
             {result.release_date || result.first_air_date}
