@@ -26,7 +26,7 @@ export default function Home({ results }) {
   return (
     <div>
       <Head>
-        <title>Not IMDB</title>
+        <title>Influenced by IMDB</title>
         <meta
           name="description"
           content="Not IMDB - for demonstration purposes only"
