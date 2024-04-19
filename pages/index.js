@@ -26,10 +26,10 @@ export default function Home({ results }) {
   return (
     <div>
       <Head>
-        <title>Influenced by IMDB</title>
+        <title>Reel Favorites</title>
         <meta
           name="description"
-          content="Not IMDB - for demonstration purposes only"
+          content="Reel Favorites is a movie database app that allows you to search for your favorite movies and TV shows."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

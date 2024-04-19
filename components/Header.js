@@ -15,14 +15,24 @@ const Header = () => {
         <button onClick={() => router.push('/')}>
           <HeaderIcon title="HOME" Icon={HomeIcon} />
         </button>
+        <button onClick={() => router.push('/about')}>
+          <HeaderIcon title="ABOUT" Icon={InformationCircleIcon} />
+        </button>
+        <button onClick={() => router.push('/profile')}>
+          <HeaderIcon title="PROFILE" Icon={UserIcon} />
+        </button>
       </div>
-      <Image
-        src="/images/not_imdb_logo.png"
-        width={200}
-        height={63}
-        className="cursor-pointer active:brightness-110"
-        onClick={() => router.push('/')}
-      />
+
+      <div className="flex">
+        <Image
+          src="/images/real-favorites-logo.png"
+          width={200}
+          height={63}
+          alt="Reel Favorites Logo"
+          className="cursor-pointer active:brightness-110"
+          onClick={() => router.push('/')}
+        />
+      </div>
     </div>
   )
 }
