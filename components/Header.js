@@ -25,7 +25,7 @@ const Header = () => {
 
       <div className="flex">
         <Image
-          src="/images/real-favorites-logo.png"
+          src="/images/reel-favorites-logo-white.png"
           width={200}
           height={63}
           alt="Reel Favorites Logo"
