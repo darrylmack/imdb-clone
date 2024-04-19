@@ -5,7 +5,7 @@ const Results = ({ results }) => {
   if (results?.length > 0) {
     console.log('Results: ', results)
     return (
-      <div className="bg-gray-700 select-none p-2  sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="bg-gray-900 select-none p-2  sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {results.map((result) => {
           return <Card key={result.id} result={result} />
         })}
@@ -14,7 +14,7 @@ const Results = ({ results }) => {
   }
 
   return (
-    <div className="bg-gray-700 select-none sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="bg-gray-900 select-none sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       <h1>Loading...</h1>
     </div>
   )

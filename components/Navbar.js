@@ -23,7 +23,7 @@ const Navbar = ({
   }
 
   return (
-    <div className="flex flex-col sm:flex-row   justify-center items-center p-4  bg-gray-600 text-gray-300 select-none text-xl lg:text-2xl">
+    <div className="flex flex-col sm:flex-row   justify-center items-center p-4  bg-gray-800 text-gray-300 select-none text-xl lg:text-2xl">
       <div className="flex pb-4 sm:pb-0 ">
         {Object.entries(requests).map(([key, { title, url }]) => (
           <h2

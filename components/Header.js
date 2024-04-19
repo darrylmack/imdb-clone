@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 const Header = () => {
   const router = useRouter()
   return (
-    <div className="bg-gray-700 text-gray-200 flex flex-col  items-center p-6 py-8 select-none sm:flex-row justify-between">
+    <div className="bg-gray-900 text-gray-200 flex flex-col  items-center p-6 py-8 select-none sm:flex-row justify-between">
       <div className="flex">
         <Image
           src="/images/reel-favorites-logo-white.png"
