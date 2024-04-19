@@ -58,13 +58,19 @@ export default function Home({ results }) {
 
 export async function getServerSideProps(context) {
   const genre = context.query.genre || 'fetchTrending'
-  const request = await fetch(
-    `https://api.themoviedb.org/3${requests[genre].url}&inlcude_adult=false`
-  ).then((response) => response.json())
+  let results = null
+  try {
+    const request = await fetch(
+      `https://api.themoviedb.org/3${requests[genre].url}&inlcude_adult=false`
+    ).then((response) => response.json())
+    results = request.results
+  } catch (error) {
+    console.log('Error fetching data: ', error)
+  }
 
   return {
     props: {
-      results: request.results
+      results: results || []
     }
   }
 }
