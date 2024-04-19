@@ -40,7 +40,6 @@ export default function Home({ results }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* Navbar */}
       <Navbar
         searchMovies={searchMovies}
         searchTerm={searchTerm}
@@ -48,7 +47,6 @@ export default function Home({ results }) {
         setSearchResults={setSearchResults}
       />
 
-      {/* Results */}
       {searchResults?.length > 0 ? (
         <Results results={searchResults} />
       ) : (
