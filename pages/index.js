@@ -5,13 +5,15 @@ import Navbar from '../components/Navbar'
 import Results from '../components/Results'
 import requests from '../utils/requests'
 
+const apiKey = process.env.NEXT_PUBLIC_API_KEY
+
 export default function Home({ results }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [searchResults, setSearchResults] = useState([])
 
   const searchMovies = async () => {
     const finalURL = encodeURI(
-      `https://api.themoviedb.org/3/search/multi?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US&query=${searchTerm}&page=1&include_adult=false`
+      `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&language=en-US&query=${searchTerm}&page=1&include_adult=false`
     )
     const request = await fetch(finalURL)
       .then((response) => response.json())
@@ -59,13 +61,16 @@ export default function Home({ results }) {
 export async function getServerSideProps(context) {
   const genre = context.query.genre || 'fetchTrending'
   let results = null
+
   try {
-    const request = await fetch(
+    const response = await fetch(
       `https://api.themoviedb.org/3${requests[genre].url}&inlcude_adult=false`
-    ).then((response) => response.json())
-    results = request.results
+    )
+
+    const data = await response.json()
+    results = data.results
   } catch (error) {
-    console.log('Error fetching data: ', error)
+    console.error('Error fetching data:', error)
   }
 
   return {
