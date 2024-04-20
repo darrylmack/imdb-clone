@@ -22,11 +22,11 @@ const Card = ({ result }) => {
     <div className="mb-4  sm:mb-0 p-2 text-gray-300 cursor-pointer hover:text-white  active:text-red-400 ">
       <Image
         onClick={goToDetail}
-        layout="responsive"
+        aspectratio={500 / 750}
         src={`${baseURL}${result.poster_path}`}
         width={500}
         height={750}
-        alt={result.title}
+        alt={result.title || 'image'}
       />
       <div className="p-2">
         <h2 className="text-lg font-bold">{result.title || result.name}</h2>
