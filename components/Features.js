@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Moment from 'react-moment'
+
 import { useRouter } from 'next/router'
 import { ThumbUpIcon } from '@heroicons/react/outline'
 
@@ -33,10 +33,6 @@ const FeatureThumb = ({ feature }) => {
         <p className="truncate text-md font-light">{result.overview}</p>
 
         <p className="flex items-center font-light ">
-          <Moment parse="YYYY-MM-DD" format="M/DD/YYYY">
-            {result.release_date || result.first_air_date}
-          </Moment>
-
           <ThumbUpIcon className="h-5 ml-3 mr-1" />
           {result.vote_count}
         </p>
