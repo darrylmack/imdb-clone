@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ThumbUpIcon } from '@heroicons/react/outline'
 
-import Moment from 'react-moment'
-import { render } from 'react-dom'
-import ImageViewer from '../../components/ImagePlayer'
+import MediaPlayer from '../../components/MediaPlayer'
+
+import ImageViewer from '../../components/MediaPlayer'
 import FeatureList from '../../components/FeatureList'
 
 const Detail = ({ movie }) => {
@@ -54,25 +54,6 @@ const Detail = ({ movie }) => {
       })
     }
     setFeatures(featuretteList)
-  }
-
-  const renderFeaturettes = () => {
-    if (featurettes.length > 0) {
-      return featurettes.map((video) => {
-        console.log(video)
-        return (
-          <div className="max-w-screen mx-auto">
-            <div className="w-[100%] aspect-w-16 aspect-h-9 bg-black">
-              <YouTube
-                videoId={video.key}
-                opts={options}
-                iframeClassName={'object-cover min-w-full h-[100%]'}
-              />
-            </div>
-          </div>
-        )
-      })
-    }
   }
 
   const getTrailer = () => {

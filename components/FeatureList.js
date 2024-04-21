@@ -1,15 +1,4 @@
-import YouTube from 'react-youtube'
-
 const FeatureList = ({ features }) => {
-  const options = {
-    width: '100%',
-    height: '100%',
-    playerVars: {
-      autoplay: 0,
-      controls: 0
-    }
-  }
-
   const playVideo = (key) => {
     console.log('Play Video: ', key)
   }
@@ -27,12 +16,8 @@ const FeatureList = ({ features }) => {
             height="auto"
             className="object-cover min-w-full bg-transparent"
           />
-          {/* <YouTube
-            videoId={feature.key}
-            opts={options}
-            iframeClassName={'object-cover min-w-full h-[100%]'}
-          /> */}
-          <h2 className="text-white text-left -mt-8 text-lg pl-2 font-light">
+
+          <h2 className="text-white text-left -mt-8 text-lg pl-2 font-medium">
             {feature.name}
           </h2>
         </div>
