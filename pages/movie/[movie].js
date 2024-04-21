@@ -2,15 +2,17 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ThumbUpIcon } from '@heroicons/react/outline'
-import YouTube from 'react-youtube'
+
 import Moment from 'react-moment'
 import { render } from 'react-dom'
+import ImageViewer from '../../components/ImagePlayer'
+import FeatureList from '../../components/FeatureList'
 
 const Detail = ({ movie }) => {
   const router = useRouter()
   const [showTrailer, setShowTrailer] = useState(false)
   const [trailers, setTrailers] = useState([])
-  const [featurettes, setFeaturettes] = useState([])
+  const [features, setFeatures] = useState([])
 
   const baseURL = 'https://image.tmdb.org/t/p/original'
 
@@ -39,10 +41,10 @@ const Detail = ({ movie }) => {
       })
     }
     setTrailers(trailerList)
-    getFeaturettes()
+    getFeatures()
   }, [])
 
-  const getFeaturettes = () => {
+  const getFeatures = () => {
     let featuretteList = []
     if (videos?.results.length > 0) {
       videos.results.forEach((video) => {
@@ -51,19 +53,10 @@ const Detail = ({ movie }) => {
         }
       })
     }
-    setFeaturettes(featuretteList)
+    setFeatures(featuretteList)
   }
 
   const renderFeaturettes = () => {
-    const options = {
-      width: '100%',
-      height: '100%',
-      playerVars: {
-        autoplay: 1,
-        controls: 0
-      }
-    }
-
     if (featurettes.length > 0) {
       return featurettes.map((video) => {
         console.log(video)
@@ -126,8 +119,20 @@ const Detail = ({ movie }) => {
   }
 
   return (
-    <div className="p-3 bg-gray-800 text-white min-h-screen">
-      <div className="flex p-1 pb-3 pt-0 justify-between items-center relative">
+    <div className="p-3 bg-gray-900 text-white min-h-screen">
+      <div className=" bg-black max-w-[90%]] sm:max-w-full border-gray-700 border-t-2 border-b-2 mb-4">
+        {showTrailer ? (
+          <div>{videos && getTrailer()}</div>
+        ) : (
+          <ImageViewer
+            baseURL={baseURL}
+            backdrop_path={backdrop_path}
+            poster_path={poster_path}
+          />
+        )}
+      </div>
+
+      <div className="flex p-1 pb-3 pt-0 justify-between items-center relative bg-gray-900">
         <h1 className=" text-4xl  text-white font-semibold">{title || name}</h1>
         {trailers && (
           <button
@@ -138,20 +143,6 @@ const Detail = ({ movie }) => {
           </button>
         )}
       </div>
-      <div className=" bg-black max-w-[90%]] sm:max-w-full">
-        {showTrailer ? (
-          <div>{videos && getTrailer()}</div>
-        ) : (
-          <Image
-            layout="responsive"
-            src={`${baseURL}${backdrop_path || poster_path}`}
-            width={1280}
-            height={720}
-          />
-        )}
-      </div>
-
-      <div>{featurettes && renderFeaturettes()}</div>
 
       <div className="p-4">
         <p className=" text-base pb-2">{overview}</p>
@@ -161,6 +152,8 @@ const Detail = ({ movie }) => {
           {vote_count}
         </p>
       </div>
+
+      <FeatureList features={features} />
     </div>
   )
 }
