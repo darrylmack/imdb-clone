@@ -76,6 +76,17 @@ const Detail = ({ movie }) => {
     return trailer.key
   }
 
+  const playTrailer = () => {
+    if (showTrailer) {
+      setShowImage(true)
+      setShowVideo(false)
+      setShowTrailer(false)
+    } else {
+      handlePlayVideo(getTrailer())
+      setShowTrailer(true)
+    }
+  }
+
   return (
     <div className="p-3 bg-gray-900 text-white min-h-screen">
       <MediaPlayer
@@ -92,7 +103,7 @@ const Detail = ({ movie }) => {
         {trailers && (
           <button
             className="bg-black text-white border-white border px-8 py-4 text-lg hover:bg-white hover:text-black"
-            onClick={() => setCurrentFeature(() => getTrailer())}
+            onClick={playTrailer}
           >
             {showTrailer ? 'Close Trailer' : 'Play Trailer'}
           </button>
