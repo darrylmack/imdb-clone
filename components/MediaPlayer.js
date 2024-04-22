@@ -10,39 +10,36 @@ const MediaPlayer = ({
   showImage,
   showVideo
 }) => {
-  console.log('baseURL', baseURL)
-  console.log('backdrop_path', backdrop_path)
-  console.log('poster_path', poster_path)
-  console.log('videoId', videoId)
-  console.log('showImage', showImage)
-  console.log('showVideo', showVideo)
+  const options = {
+    height: '100%',
+    width: '100%',
+    playerVars: {
+      autoplay: 1,
+      controls: 0
+    }
+  }
   return (
-    <div>
-      {showImage ? (
-        <Image
-          layout="responsive"
-          src={`${baseURL}${backdrop_path || poster_path}`}
-          width={1280}
-          height={720}
-          alt="Show Image"
-        />
-      ) : showVideo ? (
-        <div className=" object-cover w-[100%]">
-          <YouTube
-            videoId={videoId}
-            options={{
-              width: '100%',
-              height: '100%',
-              playerVars: {
-                autoplay: 1,
-                controls: 0,
-                modestbranding: 1,
-                showinfo: 0
-              }
-            }}
+    <div className="max-w-screen mx-auto">
+      <div className="w-[100%] aspect-w-16 aspect-h-9 bg-black">
+        {showImage ? (
+          <Image
+            layout="responsive"
+            src={`${baseURL}${backdrop_path || poster_path}`}
+            width={1280}
+            height={720}
+            alt="Show Image"
           />
-        </div>
-      ) : null}
+        ) : showVideo ? (
+          <div className=" aspect-w-16 aspect-h-9 ">
+            <YouTube
+              videoId={videoId}
+              id={videoId}
+              className=" h-full w-full rounded-lg"
+              opts={options}
+            />
+          </div>
+        ) : null}
+      </div>
     </div>
   )
 }
