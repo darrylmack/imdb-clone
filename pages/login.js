@@ -17,6 +17,7 @@ const Login = () => {
   return (
     <div>
       <form onSubmit={loginUser}>
+        <label htmlFor="email">Email</label>
         <input type="text" />
         <input type="password" />
         <button type="submit">Login</button>

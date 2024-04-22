@@ -12,10 +12,10 @@ const Header = () => {
   return (
     <div className="bg-gray-900 text-gray-200 flex flex-col  items-center p-6 py-8 select-none sm:flex-row justify-between">
       <div className="flex">
-        <Image
+        <img
           src="/images/reel-favorites-logo-white.png"
-          width={200}
-          height={63}
+          width='200px'
+          height='auto'
           alt="Reel Favorites Logo"
           className="cursor-pointer active:brightness-110"
           onClick={() => router.push('/')}
