@@ -16,6 +16,7 @@ const Login = () => {
 
   return (
     <div>
+      <h1 className=' font-bold text-xl'>Login Page</h1>
       <form onSubmit={loginUser}>
         <label htmlFor="email">Email</label>
         <input type="text" />
