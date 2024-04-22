@@ -1,12 +1,9 @@
-const FeatureList = ({ features }) => {
-  const playVideo = (key) => {
-    console.log('Play Video: ', key)
-  }
-
+const FeatureList = ({ features, playVideo }) => {
   const renderFeatures = () => {
     return features?.map((feature) => {
       return (
         <div
+          key={feature.key}
           onClick={() => playVideo(feature.key)}
           className="w-[100%]  px-4 mb-4 cursor-pointer"
         >

@@ -11,6 +11,9 @@ import FeatureList from '../../components/FeatureList'
 const Detail = ({ movie }) => {
   const router = useRouter()
   const [showTrailer, setShowTrailer] = useState(false)
+  const [showImage, setShowImage] = useState(true)
+  const [showVideo, setShowVideo] = useState(false)
+  const [currentFeature, setCurrentFeature] = useState(0)
   const [trailers, setTrailers] = useState([])
   const [features, setFeatures] = useState([])
 
@@ -32,6 +35,11 @@ const Detail = ({ movie }) => {
     vote_count,
     videos
   } = movie
+
+  useEffect(() => {
+    setShowImage(true)
+    setShowVideo(false)
+  }, [])
 
   useEffect(() => {
     let trailerList = []
@@ -56,69 +64,35 @@ const Detail = ({ movie }) => {
     setFeatures(featuretteList)
   }
 
+  const handlePlayVideo = (key) => {
+    setCurrentFeature(key)
+    setShowImage(false)
+    setShowVideo(true)
+  }
+
   const getTrailer = () => {
-    const options = {
-      width: '100%',
-      height: '100%',
-      playerVars: {
-        autoplay: 1,
-        controls: 0
-      }
-    }
-
-    const officialTrailer = trailers.find(
-      (video) => video.name === 'Official Trailer'
-    )
-
-    if (officialTrailer?.key && showTrailer) {
-      return (
-        <div className="bg-gray-900 select-none p-2  sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          <div className="w-[100%] aspect-w-16 aspect-h-9 bg-black">
-            <YouTube
-              videoId={officialTrailer.key}
-              opts={options}
-              iframeClassName={'object-cover min-w-full h-[100%]'}
-            />
-          </div>
-        </div>
-      )
-    }
-
-    if (!officialTrailer) {
-      return (
-        <div className="bg-gray-900 select-none p-2  sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          <div className="w-[240px] aspect-w-16 aspect-h-9 bg-black">
-            <YouTube
-              videoId={videos.results[0].key}
-              opts={options}
-              iframeClassName={'object-cover min-w-full h-[100%]'}
-            />
-          </div>
-        </div>
-      )
-    }
+    let trailer = trailers.find((video) => video.name === 'Official Trailer')
+    setShowTrailer(!showTrailer)
+    return trailer.key
   }
 
   return (
     <div className="p-3 bg-gray-900 text-white min-h-screen">
-      <div className=" bg-black max-w-[90%]] sm:max-w-full border-gray-700 border-t-2 border-b-2 mb-4">
-        {showTrailer ? (
-          <div>{videos && getTrailer()}</div>
-        ) : (
-          <ImageViewer
-            baseURL={baseURL}
-            backdrop_path={backdrop_path}
-            poster_path={poster_path}
-          />
-        )}
-      </div>
+      <MediaPlayer
+        baseURL={baseURL}
+        backdrop_path={backdrop_path}
+        poster_path={poster_path}
+        videoId={currentFeature}
+        showImage={showImage}
+        showVideo={showVideo}
+      />
 
       <div className="flex p-1 pb-3 pt-0 justify-between items-center relative bg-gray-900">
         <h1 className=" text-4xl  text-white font-semibold">{title || name}</h1>
         {trailers && (
           <button
             className="bg-black text-white border-white border px-8 py-4 text-lg hover:bg-white hover:text-black"
-            onClick={() => setShowTrailer(!showTrailer)}
+            onClick={() => setCurrentFeature(() => getTrailer())}
           >
             {showTrailer ? 'Close Trailer' : 'Play Trailer'}
           </button>
@@ -134,7 +108,7 @@ const Detail = ({ movie }) => {
         </p>
       </div>
 
-      <FeatureList features={features} />
+      <FeatureList features={features} playVideo={handlePlayVideo} />
     </div>
   )
 }
