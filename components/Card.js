@@ -7,15 +7,19 @@ const Card = ({ result }) => {
   const router = useRouter()
   const baseURL = 'https://image.tmdb.org/t/p/original'
   const goToDetail = () => {
-    if (result.media_type) {
-      if (result.media_type === 'movie') {
-        router.push(`/movie/${result.id}`)
-      } else {
-        router.push(`/tv/${result.id}`)
-      }
-    }
+    console.log('Result:', result)
+    const { media_type } = result
 
-    router.push(`/movie/${result.id}`)
+    switch (media_type) {
+      case 'tv':
+        router.push(`/tv/${result.id}`)
+      case 'movie':
+        router.push(`/movie/${result.id}`)
+        break
+
+      default:
+        break
+    }
   }
 
   return (
