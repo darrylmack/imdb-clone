@@ -22,7 +22,7 @@ const Header = () => {
         // router.push('/')
       } else {
         setIsSignedIn(false)
-        router.push('/account')
+        router.push('/login')
       }
     })
   }
@@ -67,7 +67,7 @@ const Header = () => {
           </button>
         )}
         {!isSignedIn && (
-          <button onClick={() => router.push('/account')}>
+          <button onClick={() => router.push('/')}>
             <HeaderIcon title="SIGN IN" Icon={UserIcon} />
           </button>
         )}
