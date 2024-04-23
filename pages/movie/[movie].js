@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ThumbUpIcon } from '@heroicons/react/outline'
 
+import { db, auth } from '../../utils/firebase'
 import MediaPlayer from '../../components/MediaPlayer'
 
 import ImageViewer from '../../components/MediaPlayer'
@@ -10,6 +11,9 @@ import FeatureList from '../../components/FeatureList'
 
 const Detail = ({ movie }) => {
   const router = useRouter()
+  const user = auth.currentUser
+
+  const [uid, setUid] = useState('')
   const [showTrailer, setShowTrailer] = useState(false)
   const [showImage, setShowImage] = useState(true)
   const [showVideo, setShowVideo] = useState(false)
@@ -33,8 +37,14 @@ const Detail = ({ movie }) => {
     release_date,
     first_air_date,
     vote_count,
-    videos
+    videos,
+    id
   } = movie
+
+  useEffect(() => {
+
+    setUid(user?.uid)
+  }, [user])
 
   useEffect(() => {
     setShowImage(true)
@@ -87,6 +97,21 @@ const Detail = ({ movie }) => {
     }
   }
 
+  const addMovie = async () => {
+    const uid = user.uid
+    try {
+      await db.collection('users').doc(uid).collection('movies').add({
+        backdrop_path,
+        poster_path,
+        title,
+id
+      })
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+
+
   return (
     <div className="p-3 bg-gray-900 text-white min-h-screen">
       <MediaPlayer
@@ -108,6 +133,12 @@ const Detail = ({ movie }) => {
             {showTrailer ? 'Close Trailer' : 'Play Trailer'}
           </button>
         )}
+         <button
+            className="bg-black text-white border-white border px-8 py-4 text-lg hover:bg-white hover:text-black"
+            onClick={addMovie}
+          >
+            Add to Favorites
+          </button>
       </div>
 
       <div className="p-4">

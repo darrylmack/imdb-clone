@@ -1,14 +1,13 @@
 import Image from 'next/image'
-import Moment from 'react-moment'
 import { useRouter } from 'next/router'
-import { ThumbUpIcon, HeartIcon } from '@heroicons/react/outline'
-import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
+
 
 const Card = ({ result }) => {
   const router = useRouter()
   const baseURL = 'https://image.tmdb.org/t/p/original'
   const goToDetail = () => {
-    console.log('Result:', result)
+console.log(result.id)
+router.push(`/movie/${result.id}`)
     const { media_type } = result
 
     switch (media_type) {
@@ -39,16 +38,9 @@ const Card = ({ result }) => {
 
 
         <div className="flex justify-between font-light ">
-          <Moment parse="YYYY-MM-DD" format="M/DD/YYYY">
-            {result.release_date || result.first_air_date}
-          </Moment>
+    
 
-<div className='flex'>
-<ThumbUpIcon className="h-5 ml-3 mr-1" />
-          {result.vote_count}
-</div>
-          
-          { true ?         <HeartIconSolid className="h-5 text-red-400 ml-4 mr-0" /> : <HeartIcon className="h-5 ml-3 mr-1"/>}
+
         </div>
 
       </div>
