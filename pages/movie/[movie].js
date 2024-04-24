@@ -3,17 +3,21 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ThumbUpIcon } from '@heroicons/react/outline'
 
-import { db, auth } from '../../utils/firebase'
+import { db } from '../../utils/firebase'
 import MediaPlayer from '../../components/MediaPlayer'
 
 import ImageViewer from '../../components/MediaPlayer'
 import FeatureList from '../../components/FeatureList'
 
+import { useAuth } from '../../context/AuthContext'
+
+
+
 const Detail = ({ movie }) => {
   const router = useRouter()
-  const user = auth.currentUser
+  const { currentUser, loading } = useAuth()
 
-  const [uid, setUid] = useState('')
+  const uid = currentUser?.uid
   const [showTrailer, setShowTrailer] = useState(false)
   const [showImage, setShowImage] = useState(true)
   const [showVideo, setShowVideo] = useState(false)
@@ -41,17 +45,16 @@ const Detail = ({ movie }) => {
     id
   } = movie
 
-  useEffect(() => {
 
-    setUid(user?.uid)
-  }, [user])
 
   useEffect(() => {
+    console.log('Set Image')
     setShowImage(true)
     setShowVideo(false)
   }, [])
 
   useEffect(() => {
+    console.log('Set Trailers')
     let trailerList = []
     if (videos?.results.length > 0) {
       videos.results.forEach((video) => {
@@ -61,6 +64,7 @@ const Detail = ({ movie }) => {
     setTrailers(trailerList)
     getFeatures()
   }, [])
+
 
   const getFeatures = () => {
     let featuretteList = []
@@ -97,19 +101,23 @@ const Detail = ({ movie }) => {
     }
   }
 
-  const addMovie = async () => {
-    const uid = user.uid
+  const addMovieToFavorites = async () => {
+  if (uid) {
     try {
       await db.collection('users').doc(uid).collection('movies').add({
         backdrop_path,
         poster_path,
         title,
-id
+        id
       })
     } catch (error) {
       console.error(error.message)
     }
+
+  } else {
+    router.push('/login')
   }
+}
 
 
   return (
@@ -135,7 +143,7 @@ id
         )}
          <button
             className="bg-black text-white border-white border px-8 py-4 text-lg hover:bg-white hover:text-black"
-            onClick={addMovie}
+            onClick={addMovieToFavorites}
           >
             Add to Favorites
           </button>
@@ -153,6 +161,7 @@ id
       <FeatureList features={features} playVideo={handlePlayVideo} />
     </div>
   )
+
 }
 
 export default Detail

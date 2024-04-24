@@ -11,22 +11,7 @@ import HeaderIcon from './HeaderIcon'
 
 const Header = () => {
   const router = useRouter()
-  const user = auth.currentUser
-
-  const [isSignedIn, setIsSignedIn] = useState(false)
-
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setIsSignedIn(true)
-        // router.push('/')
-      } else {
-        setIsSignedIn(false)
-        router.push('/login')
-      }
-    })
-  }
-  , [user])
+  const [isSignedIn, setIsSignedIn] = useState(true)
 
   const signOut = async () => {
     try {
