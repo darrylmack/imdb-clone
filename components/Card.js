@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import Link from 'next/link'
 import Image from 'next/image'
 import Moment from 'react-moment'
 import { useRouter } from 'next/router'
@@ -33,7 +34,7 @@ const Card = ({ result }) => {
             const genre = genres.find(g => g.id === genreId);
             return genre ? (
               <Fragment key={genreId}>
-                <a className='hover:text-white ' href={`/genres/${genreId}`}>{genre.name}</a>
+                <Link className='hover:text-white ' href={`/genres/${genreId}`}>{genre.name}</Link>
               </Fragment>
             ) : null;
           })

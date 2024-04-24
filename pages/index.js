@@ -1,4 +1,4 @@
-import Head from 'next/head'
+
 import { useState } from 'react'
 
 import Navbar from '../components/Navbar'
@@ -51,7 +51,7 @@ export async function getServerSideProps(context) {
 
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3${requests[genre].url}&inlcude_adult=false`
+      `https://api.themoviedb.org/3${requests[genre].url}&include_adult=false`
     )
 
     const data = await response.json()
