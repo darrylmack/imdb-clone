@@ -13,7 +13,7 @@ const {params} = context
 const genreId = params.genreId;
 console.log('GENRE ID:', genreId)
 
-const url = `${BASE_URL}/discover/movie?api_key=${apiKey}&with_genres=${genreId}`;
+const url = `${BASE_URL}/discover/tv?api_key=${apiKey}&with_genres=${genreId}`;
  
 
   try {
