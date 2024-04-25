@@ -41,7 +41,7 @@ const Card = ({ result }) => {
             const genre = genres.find(g => g.id === genreId);
             return genre ? (
               <Fragment key={genreId}>
-                <Link className='hover:text-white ' href={`/genres/${genreId}`}>{genre.name}</Link>
+                <Link className='hover:text-yellow-200 underline underline-offset-3 ' href={`/genres/${genreId}`}>{genre.name}</Link>
               </Fragment>
             ) : null;
           })
@@ -75,8 +75,9 @@ const vote_average = result.vote_average.toFixed(1)
 
         <div className="flex justify-between align-center font-light py-1">
           <div className='flex border-gray-500 border-2 rounded-md px-2 py-1'>IMDb:<p className=' pl-1 font-semibold'>{vote_average}</p></div>
-          <div>{media_type === 'movie' ? <FilmIcon className="h-5 ml-3 mr-1 text-gray-300"/>: <TvIcon className="h-5 ml-3 mr-1"/>}</div>
           { true ?         <HeartIconSolid className="h-5 text-red-400 ml-4 mr-0" /> : <HeartIcon className="h-5 ml-3 mr-1"/>}
+          <div>{media_type === 'movie' ? 'Film': 'TV'}</div>
+      
         </div>
         <div className='flex '>{renderGenres()}</div>
 
