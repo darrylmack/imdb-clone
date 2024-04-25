@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ThumbUpIcon } from '@heroicons/react/outline'
@@ -159,6 +159,15 @@ const Detail = ({ movie }) => {
       </div>
 
       <FeatureList features={features} playVideo={handlePlayVideo} />
+      <div className="fixed inset-x-0 bottom-0 bg-gray-800/50 shadow-md">
+        <div className="max-w-screen-xl  px-4 py-4 flex justify-start">
+
+            <button onClick={() => router.back()} className="border border-w-2 bg-gray-800 border-gray-200 py-2 px-4 rounded-md mr-4 text-white  hover:bg-gray-200 hover:text-gray-900">Back
+            </button>
+
+     
+        </div>
+      </div>
     </div>
   )
 

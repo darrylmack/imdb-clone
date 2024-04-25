@@ -41,7 +41,7 @@ const Card = ({ result }) => {
             const genre = genres.find(g => g.id === genreId);
             return genre ? (
               <Fragment key={genreId}>
-                <Link className='hover:text-yellow-200 underline underline-offset-3 ' href={`/genres/${genreId}`}>{genre.name}</Link>
+                <Link className='text-gray-300 hover:text-yellow-200 underline underline-offset-3 ' href={`/genres/${genreId}`}>{genre.name}</Link>
               </Fragment>
             ) : null;
           })
