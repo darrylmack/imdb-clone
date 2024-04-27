@@ -1,11 +1,10 @@
-
-import Results from '../components/Favorites';
+import Results from '../components/Favorites'
 import { useFavorites } from '../context/FavoritesContext'
 
 function FavoriteMovies() {
-  const { favorites, loading } = useFavorites();
+  const { favorites, loading } = useFavorites()
 
-  // if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>
 
   return (
     <div>
@@ -17,7 +16,7 @@ function FavoriteMovies() {
         ))}
       </ul> */}
     </div>
-  );
+  )
 }
 
-export default FavoriteMovies;
+export default FavoriteMovies
