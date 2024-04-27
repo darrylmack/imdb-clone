@@ -7,24 +7,25 @@ const FavoritesContext = createContext()
 export const useFavorites = () => useContext(FavoritesContext)
 
 export function FavoritesProvider({ children }) {
-  const { currentUser, loading } = useAuth()
+  const { currentUser } = useAuth()
   const [favorites, setFavorites] = useState([])
+  const [loading, setLoading] = useState(true) // Ensure loading state is managed
 
   useEffect(() => {
-    const unsubscribe = (currentUser) => {
-      if (currentUser) {
-        console.log('Current User in Favorites:', currentUser)
-        fetchFavorites(currentUser.uid)
-      } else {
-        console.log('No Current User in Favorites')
-        setFavorites([])
-      }
+    if (currentUser) {
+      console.log('Current User in Favorites:', currentUser)
+      fetchFavorites(currentUser.uid)
+    } else {
+      console.log('No Current User in Favorites')
+      setFavorites([])
     }
 
-    return () => unsubscribe() // Cleanup subscription
-  }, [currentUser, loading])
+    // Return a cleanup function if you have real subscriptions or listeners
+    return () => {
+      // Cleanup code here, if any
+    }
+  }, [currentUser]) // Remove loading from dependencies if not needed
 
-  console.log('Favorites:', favorites)
   const fetchFavorites = async (userId) => {
     try {
       const moviesRef = db.collection('users').doc(userId).collection('movies')
@@ -34,10 +35,10 @@ export function FavoritesProvider({ children }) {
         ...doc.data()
       }))
       setFavorites(moviesList)
-      setLoading(false)
     } catch (error) {
       console.error('Failed to fetch favorites', error)
     }
+    setLoading(false) // Set loading to false after fetching data
   }
 
   return (
