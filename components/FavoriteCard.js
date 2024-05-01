@@ -1,13 +1,14 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-
+import { useAuth } from '../context/AuthContext'
 
 const Card = ({ result }) => {
+  const { currentUser } = useAuth()
   const router = useRouter()
   const baseURL = 'https://image.tmdb.org/t/p/original'
   const goToDetail = () => {
-console.log(result.id)
-router.push(`/movie/${result.id}`)
+    console.log(result.id)
+    router.push(`/movie/${result.id}`)
     const { media_type } = result
 
     switch (media_type) {
@@ -36,13 +37,7 @@ router.push(`/movie/${result.id}`)
         {/* <h2 className="text-lg font-bold">{result.title || result.name}</h2> */}
         {/* <p className="truncate text-md font-light">{result.overview}</p> */}
 
-
-        <div className="flex justify-between font-light ">
-    
-
-
-        </div>
-
+        <div className="flex justify-between font-light "></div>
       </div>
     </div>
   )
