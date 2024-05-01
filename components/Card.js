@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Moment from 'react-moment'
@@ -31,6 +31,7 @@ const TvIcon = () => {
 
 const Card = ({ result }) => {
   const router = useRouter()
+  const { currentUser } = useAuth()
   const baseURL = 'https://image.tmdb.org/t/p/original'
   const { media_type } = result
   const [isFavorite, setIsFavorite] = useState(false)
@@ -133,14 +134,14 @@ const Card = ({ result }) => {
           <div className="flex border-gray-500 border-2 rounded-md px-2 py-1">
             IMDb:<p className=" pl-1 font-semibold">{vote_average}</p>
           </div>
-          <div className="flex" onClick=(setFavoriteStatus)>
-          {isFavorite ? (
-            <HeartIconSolid className="h-5 text-red-400 ml-4 mr-0" />
-          ) : (
-            <HeartIcon className="h-5 ml-3 mr-1" />
-          )}
+          <div className="flex" onClick={setFavoriteStatus}>
+            {isFavorite ? (
+              <HeartIconSolid className="h-5 text-red-400 ml-4 mr-0" />
+            ) : (
+              <HeartIcon className="h-5 ml-3 mr-1" />
+            )}
           </div>
-       
+
           <div>{media_type === 'movie' ? 'Film' : 'TV'}</div>
         </div>
         <div className="flex ">{renderGenres()}</div>
