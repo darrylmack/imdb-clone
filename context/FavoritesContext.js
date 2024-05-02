@@ -12,36 +12,45 @@ export function FavoritesProvider({ children }) {
   const [loading, setLoading] = useState(true) // Ensure loading state is managed
 
   useEffect(() => {
+    let unsubscribe
     if (currentUser) {
       console.log('Current User in Favorites:', currentUser)
-      fetchFavorites(currentUser.uid)
+      unsubscribe = fetchFavorites(currentUser.uid)
     } else {
       console.log('No Current User in Favorites')
       setFavorites([])
     }
 
-    // Return a cleanup function if you have real subscriptions or listeners
+    // Return a cleanup function to unsubscribe from the snapshot listener
     return () => {
-      // Cleanup code here, if any
+      if (unsubscribe) {
+        unsubscribe()
+      }
     }
-  }, [currentUser]) // Remove loading from dependencies if not needed
+  }, [currentUser])
 
-  const fetchFavorites = async (userId) => {
-    try {
-      const favoritesRef = db
-        .collection('users')
-        .doc(userId)
-        .collection('favorites')
-      const snapshot = await favoritesRef.get()
-      const favoritesList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
-      }))
-      setFavorites(favoritesList)
-    } catch (error) {
-      console.error('Failed to fetch favorites', error)
-    }
-    setLoading(false) // Set loading to false after fetching data
+  const fetchFavorites = (userId) => {
+    const favoritesRef = db
+      .collection('users')
+      .doc(userId)
+      .collection('favorites')
+
+    const unsubscribe = favoritesRef.onSnapshot(
+      (snapshot) => {
+        const favoritesList = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }))
+        setFavorites(favoritesList)
+        setLoading(false) // Set loading to false after fetching data
+      },
+      (error) => {
+        console.error('Failed to fetch favorites', error)
+      }
+    )
+
+    // Return the unsubscribe function to clean up the subscription
+    return unsubscribe
   }
 
   return (
