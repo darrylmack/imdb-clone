@@ -28,13 +28,16 @@ export function FavoritesProvider({ children }) {
 
   const fetchFavorites = async (userId) => {
     try {
-      const moviesRef = db.collection('users').doc(userId).collection('movies')
-      const snapshot = await moviesRef.get()
-      const moviesList = snapshot.docs.map((doc) => ({
+      const favoritesRef = db
+        .collection('users')
+        .doc(userId)
+        .collection('favorites')
+      const snapshot = await favoritesRef.get()
+      const favoritesList = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data()
       }))
-      setFavorites(moviesList)
+      setFavorites(favoritesList)
     } catch (error) {
       console.error('Failed to fetch favorites', error)
     }
