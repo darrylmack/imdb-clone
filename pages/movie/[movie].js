@@ -10,8 +10,7 @@ import ImageViewer from '../../components/MediaPlayer'
 import FeatureList from '../../components/FeatureList'
 
 import { useAuth } from '../../context/AuthContext'
-
-
+import { useFavorites } from '../../context/FavoritesContext'
 
 const Detail = ({ movie }) => {
   const router = useRouter()
@@ -24,6 +23,7 @@ const Detail = ({ movie }) => {
   const [currentFeature, setCurrentFeature] = useState(0)
   const [trailers, setTrailers] = useState([])
   const [features, setFeatures] = useState([])
+  const [isFavorite, setIsFavorite] = useState(false)
 
   const baseURL = 'https://image.tmdb.org/t/p/original'
 
@@ -45,12 +45,11 @@ const Detail = ({ movie }) => {
     id
   } = movie
 
-
-
   useEffect(() => {
     console.log('Set Image')
     setShowImage(true)
     setShowVideo(false)
+    getFavoriteStatus()
   }, [])
 
   useEffect(() => {
@@ -64,7 +63,6 @@ const Detail = ({ movie }) => {
     setTrailers(trailerList)
     getFeatures()
   }, [])
-
 
   const getFeatures = () => {
     let featuretteList = []
@@ -102,23 +100,55 @@ const Detail = ({ movie }) => {
   }
 
   const addMovieToFavorites = async () => {
-  if (uid) {
-    try {
-      await db.collection('users').doc(uid).collection('movies').add({
-        backdrop_path,
-        poster_path,
-        title,
-        id
-      })
-    } catch (error) {
-      console.error(error.message)
+    if (uid) {
+      try {
+        await db.collection('users').doc(uid).collection('favorites').add({
+          backdrop_path,
+          poster_path,
+          title,
+          id
+        })
+      } catch (error) {
+        console.error(error.message)
+      }
+    } else {
+      router.push('/login')
     }
-
-  } else {
-    router.push('/login')
   }
-}
 
+  const removeFavorite = async () => {
+    const userRef = db.collection('users').doc(uid)
+    const favoritesRef = userRef.collection('favorites').doc(String(id))
+  }
+
+  const getFavoriteStatus = async () => {
+    if (!currentUser) return
+    const userRef = db.collection('users').doc(currentUser.uid)
+    const favoritesRef = userRef.collection('favorites')
+
+    const snapshot = await favoritesRef.get()
+
+    const favorites = snapshot.docs.map((doc) => doc.data())
+
+    const favorite = favorites.find((f) => f.id === id)
+    if (favorite) {
+      setIsFavorite(true)
+    }
+  }
+
+  const setFavoriteStatus = () => {
+    if (!currentUser) {
+      alert('Please sign in to add to favorites')
+      return
+    }
+    if (isFavorite) {
+      setIsFavorite(false)
+      removeFavorite()
+    } else {
+      setIsFavorite(true)
+      addMovieToFavorites()
+    }
+  }
 
   return (
     <div className="p-3 bg-gray-900 text-white min-h-screen">
@@ -141,12 +171,14 @@ const Detail = ({ movie }) => {
             {showTrailer ? 'Close Trailer' : 'Play Trailer'}
           </button>
         )}
-         <button
+        {
+          <button
             className="bg-black text-white border-white border px-8 py-4 text-lg hover:bg-white hover:text-black"
-            onClick={addMovieToFavorites}
+            onClick={setFavoriteStatus}
           >
-            Add to Favorites
+            {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
           </button>
+        }
       </div>
 
       <div className="p-4">
@@ -161,16 +193,16 @@ const Detail = ({ movie }) => {
       <FeatureList features={features} playVideo={handlePlayVideo} />
       <div className="fixed inset-x-0 bottom-0 bg-gray-800/50 shadow-md">
         <div className="max-w-screen-xl  px-4 py-4 flex justify-start">
-
-            <button onClick={() => router.back()} className="border border-w-2 bg-gray-800 border-gray-200 py-2 px-4 rounded-md mr-4 text-white  hover:bg-gray-200 hover:text-gray-900">Back
-            </button>
-
-     
+          <button
+            onClick={() => router.back()}
+            className="border border-w-2 bg-gray-800 border-gray-200 py-2 px-4 rounded-md mr-4 text-white  hover:bg-gray-200 hover:text-gray-900"
+          >
+            Back
+          </button>
         </div>
       </div>
     </div>
   )
-
 }
 
 export default Detail
