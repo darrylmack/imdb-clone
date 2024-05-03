@@ -7,19 +7,24 @@ const Navbar = ({
   searchMovies,
   searchTerm,
   setSearchTerm,
-  setSearchResults
+  setSearchResults,
+  setCurrentGenre
 }) => {
   const router = useRouter()
 
   const navigateAndClear = (key) => {
-    router.push(`?genre=${key}`)
-    setSearchResults('')
+    setSearchResults([])
     setSearchTerm('')
+    setCurrentGenre(key)
+    router.push(`?genre=${key}`)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    searchMovies()
+    if (searchTerm) {
+      setCurrentGenre('search')
+      searchMovies()
+    }
   }
 
   return (
@@ -40,7 +45,7 @@ const Navbar = ({
           <div className="flex  flex-row  justify-center  items-center  ">
             <SearchIcon
               className="h-0 sm:h-6 text-yellow-500 mr-3 cursor-pointer hover:text-yellow-500 disabled:text-gray-400"
-              onClick={searchMovies}
+              onClick={handleSubmit}
             />
 
             <input
