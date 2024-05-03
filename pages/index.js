@@ -1,15 +1,17 @@
-
 import { useState } from 'react'
 
 import Navbar from '../components/Navbar'
 import Results from '../components/Results'
 import requests from '../utils/requests'
+import Pagination from '../components/Pagination'
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY
 
 export default function Home({ results }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [searchResults, setSearchResults] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const resultsPerPage = 20
 
   const searchMovies = async () => {
     const finalURL = encodeURI(
@@ -25,22 +27,48 @@ export default function Home({ results }) {
     setSearchResults(movies)
   }
 
+  const handlePageChange = () => {
+    const indexOfLastResult = currentPage * resultsPerPage
+    const indexOfFirstResult = indexOfLastResult - resultsPerPage
+    return searchResults.slice(indexOfFirstResult, indexOfLastResult)
+  }
+
+  const onNextPage = () => {
+    setCurrentPage(currentPage + 1)
+    console.log('Current Page:', currentPage)
+  }
+
+  const onPreviousPage = () => {
+    setCurrentPage(currentPage - 1)
+    console.log('Current Page:', currentPage)
+  }
+
   return (
     <div>
-      
-
       <Navbar
         searchMovies={searchMovies}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         setSearchResults={setSearchResults}
       />
+      <div className=" pb-14">
+        {searchResults?.length > 0 ? (
+          <Results results={searchResults} />
+        ) : (
+          <Results results={results} />
+        )}
+      </div>
 
-      {searchResults?.length > 0 ? (
-        <Results results={searchResults} />
-      ) : (
-        <Results results={results} />
-      )}
+      <div className="fixed inset-x-0 bottom-0 bg-gray-800 shadow-md">
+        <Pagination
+          currentPage={currentPage}
+          totalResults={searchResults.length}
+          resultsPerPage={resultsPerPage}
+          onPageChange={handlePageChange}
+          onNextPage={onNextPage}
+          onPreviousPage={onPreviousPage}
+        />
+      </div>
     </div>
   )
 }
