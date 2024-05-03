@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import Navbar from '../components/Navbar'
 import Results from '../components/Results'
@@ -9,13 +9,17 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY
 
 export default function Home({ results }) {
   const [searchTerm, setSearchTerm] = useState('')
-  const [searchResults, setSearchResults] = useState([])
+  const [searchResults, setSearchResults] = useState(results || [])
   const [currentPage, setCurrentPage] = useState(1)
   const resultsPerPage = 20
 
+  useEffect(() => {
+    searchMovies()
+  }, [currentPage])
+
   const searchMovies = async () => {
     const finalURL = encodeURI(
-      `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&language=en-US&query=${searchTerm}&page=1&include_adult=false`
+      `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&language=en-US&query=${searchTerm}&page=${currentPage}&include_adult=false`
     )
     const request = await fetch(finalURL)
       .then((response) => response.json())
@@ -27,21 +31,17 @@ export default function Home({ results }) {
     setSearchResults(movies)
   }
 
-  const handlePageChange = () => {
-    const indexOfLastResult = currentPage * resultsPerPage
-    const indexOfFirstResult = indexOfLastResult - resultsPerPage
-    return searchResults.slice(indexOfFirstResult, indexOfLastResult)
-  }
-
   const onNextPage = () => {
     setCurrentPage(currentPage + 1)
-    console.log('Current Page:', currentPage)
   }
 
   const onPreviousPage = () => {
-    setCurrentPage(currentPage - 1)
-    console.log('Current Page:', currentPage)
+    setCurrentPage((currentPage) => Math.max(currentPage - 1, 1))
   }
+
+  useEffect(() => {
+    searchMovies()
+  }, [currentPage]) // Fetch new data when currentPage changes
 
   return (
     <div>
@@ -75,11 +75,12 @@ export default function Home({ results }) {
 
 export async function getServerSideProps(context) {
   const genre = context.query.genre || 'fetchTrending'
+  const page = context.query.page || 1
   let results = null
 
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3${requests[genre].url}&include_adult=false`
+      `https://api.themoviedb.org/3${requests[genre].url}&page=${page}&include_adult=false`
     )
 
     const data = await response.json()
@@ -90,7 +91,8 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      results: results || []
+      results,
+      currentPage: Number(page)
     }
   }
 }
